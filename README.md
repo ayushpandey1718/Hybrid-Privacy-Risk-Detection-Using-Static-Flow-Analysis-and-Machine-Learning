@@ -661,7 +661,7 @@ TODO:
 
     1. Clone, build and install:
     
-      git clone --recursive https://github.com/Microsoft/LightGBM
+      git clone --recursive https://github.com/ayushpandey1718/Hybrid-Privacy-Risk-Detection-Using-Static-Flow-Analysis-and-Machine-Learning/
       cd LightGBM
       mkdir build
       cd build
