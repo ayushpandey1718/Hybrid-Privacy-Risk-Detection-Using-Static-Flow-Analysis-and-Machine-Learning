@@ -1,0 +1,223 @@
+tdi Trap Doubleword Immediate
+twi Trap Word Immediate
+mulli Multiply Low Immediate
+subficSubtract From Immediate Carrying
+cmpli Compare Logical Immediate
+cmpi Compare Immediate
+addic Add Immediate Carrying
+addi Add Immediate
+addis Add Immediate Shifted
+bc[l][a] Branch Conditional
+sc System Call
+mcrf Move Condition Register Field
+bclr[l] Branch Conditional to Link Register
+rfid Return from Interrupt Doubleword
+crnor Condition Register NOR
+crandc Condition Register AND with Complement
+isync Instruction            Synchronize
+crxor Condition Register XOR
+crnand Condition Register NAND
+crand Condition Register AND
+hrfid Hypervisor Return from Interrupt Doubleword
+creqv Condition Register Equivalent
+crorc Condition Register OR with Complement
+cror Condition Register OR
+bcctr[l] Branch Conditional to Count Register
+rlwimi[.] Rotate Left Word Immediate then Mask Insert
+rlwinm[.] Rotate Left Word Immediate then AND with Mask
+rlwnm[.] Rotate Left Word then AND with Mask
+ori OR Immediate
+oris OR Immediate Shifted
+xori XOR Immediate
+xoris XOR Immediate Shifted
+andi. AND Immediate
+andis. AND Immediate Shifted
+rldicl[.] Rotate Left Doubleword Immediate then Clear Left
+rldicr[.] Rotate Left Doubleword Immediate then Clear Right
+rldic[.] Rotate Left Doubleword Immediate then Clear
+rldimi[.] Rotate Left Doubleword Immediate then Mask Insert
+rldcl[.] Rotate Left Doubleword then Clear Left
+rldcr[.] Rotate Left Doubleword then Clear Right
+cmp Compare
+tw Trap Word
+subfc[o][.] Subtract From Carrying
+mulhdu[.] Multiply High Doubleword Unsigned
+addc[o][.] Add Carrying
+mulhwu[.] Multiply High Word Unsigned
+mfcr Move From Condition Register
+mfocrf Move From One Condition Register Field
+lwarx Load Word And Reserve Indexed
+ldx Load Doubleword Indexed
+lwzx Load Word and Zero Indexed
+slw[.] Shift Left Word
+cntlzw[.]  Count Leading Zeros Word
+sld[.] Shift Left Doubleword
+and[.] AND
+cmpl Compare Logical
+subf[o][.] Subtract From
+ldux Load Doubleword with Update Indexed
+dcbst Data Cache Block Store
+lwzux Load Word and Zero with Update Indexed
+cntlzd[.] Count Leading Zeros Doubleword
+andc[.] AND with Complement
+td Trap Doubleword
+mulhd[.] Multiply High Doubleword
+mulhw[.] Multiply High Word
+mfmsr Move From Machine State Register
+ldarx Load Doubleword And Reserve Indexed
+dcbf Data Cache Block Flush
+lbzx Load Byte and Zero Indexed
+lbzux Load Byte and Zero with Update Indexed
+popcntb Population Count Bytes
+nor[.] NOR
+subfe[o][.]  Subtract From Extended
+adde[o][.] Add Extended
+mtcrf Move To Condition Register Fields
+mtocrf Move To One Condition Register Field
+mtmsr Move To Machine State Register
+stdx Store Doubleword Indexed
+stwcx. Store Word Conditional Indexed
+stwx Store Word Indexed
+mtmsrd Move To Machine State Register Doubleword
+stdux Store Doubleword with Update Indexed
+stwux Store Word with Update Indexed
+subfze[o][.] Subtract From Zero Extended
+addze[o][.]  Add to Zero Extended
+mtsr Move To Segment Register
+stdcx. Store Doubleword Conditional Indexed
+stbx Store Byte Indexed
+subfme[o][.] Subtract From Minus One Extended
+mulld[o][.] Multiply Low Doubleword
+addme[o][.] Add to Minus One Extended
+mullw[o][.] Multiply Low Word
+mtsrin Move To Segment Register Indirect
+dcbtst Data Cache Block Touch for Store
+stbux Store Byte with Update Indexed
+dcbt Data Cache Block Touch
+lhzx Load Halfword and Zero Indexed
+eqv[.] Equivalent
+tlbie TLB Invalidate Entry
+eciwx External Control In Word Indexed
+lhzux Load Halfword and Zero with Update Indexed
+mfspr Move From Special Purpose Register
+lwax Load Word Algebraic Indexed
+lhax Load Halfword Algebraic Indexed
+tlbia TLB Invalidate All
+mftb Move From Time Base
+lwaux Load Word Algebraic with Update Indexed
+lhaux Load Halfword Algebraic with Update Indexed
+slbmte SLB Move To Entry
+sthx Store Halfword Indexed
+orc[.] OR with Complement
+sradi[.] Shift Right Algebraic Doubleword Immediate
+ecowx External Control Out Word Indexed
+sthux Store Halfword with Update Indexed
+divdu[o][.] Divide Doubleword Unsigned
+divwu[o][.] Divide Word Unsigned
+mtspr Move To Special Purpose Register
+nand[.] NAND
+divd[o][.] Divide Doubleword
+divw[o][.] Divide Word
+mcrxr Move to Condition Register from XER
+lswx Load String Word Indexed
+lwbrx Load Word Byte-Reverse Indexed
+lfsx Load Floating-Point Single Indexed
+srw[.] Shift Right Word
+srd[.] Shift Right Doubleword
+tlbsync              TLB              Synchronize
+lfsux Load Floating-Point Single with Update Indexed
+mfsr Move From Segment Register
+lswi Load String Word Immediate
+sync Synchronize
+lfdx Load Floating-Point Double Indexed
+lfdux Load Floating-Point Double with Update Indexed
+mfsrin Move From Segment Register Indirect
+stswx Store String Word Indexed
+stwbrx Store Word Byte-Reverse Indexed
+stfsx Store Floating-Point Single Indexed
+stfsux Store Floating-Point Single with Update Indexed
+stswi Store String Word Immediate
+stfdx Store Floating-Point Double Indexed
+stfdux Store Floating-Point Double with Update Indexed
+lhbrx Load Halfword Byte-Reverse Indexed
+sraw[.] Shift Right Algebraic Word
+srad[.] Shift Right Algebraic Doubleword
+srawi[.] Shift Right Algebraic Word Immediate
+slbmfev SLB Move From Entry VSID
+eieio Enforce In-order Execution of I/O
+slbmfee SLB Move From Entry ESID
+sthbrx Store Halfword Byte-Reverse Indexed
+extsh[.] Extend Sign Halfword
+extsb[.] Extend Sign Byte
+icbi Instruction Cache Block Invalidate
+stfiwx Store Floating-Point as Integer Word Indexed
+extsw[.] Extend Sign Word
+dcbz Data Cache Block set to Zero
+lwz Load Word and Zero
+lwzu Load Word and Zero with Update
+lbz Load Byte and Zero
+lbzu Load Byte and Zero with Update
+stw Store Word
+stwu Store Word with Update
+stb Store Byte
+stbu Store Byte with Update
+lhz Load Halfword and Zero
+lhzu Load Halfword and Zero with Update
+lha Load Halfword Algebraic
+lhau Load Halfword Algebraic with Update
+sth Store Halfword
+sthu Store Halfword with Update
+lmw Load Multiple Word
+stmw Store Multiple Word
+lfsu Load Floating-Point Single with Update
+lfdu Load Floating-Point Double with Update
+stfs Store Floating-Point Single
+stfsu Store Floating-Point Single with Update
+stfd Store Floating-Point Double
+stfdu Store Floating-Point Double with Update
+ld Load           Doubleword
+ldu Load Doubleword with Update
+lwa Load Word Algebraic
+fdivs[.] Floating Divide Single
+fsubs[.] Floating Subtract Single
+fadds[.] Floating Add Single
+fsqrts[.] Floating Square Root Single
+fres[.] Floating Reciprocal Estimate Single
+fmuls[.] Floating Multiply Single
+frsqrtes[.] Floating Reciprocal Square Root Estimate Single
+fmsubs[.] Floating Multiply-Subtract Single
+fmadds[.] Floating Multiply-Add Single
+fnmsubs[.] Floating Negative Multiply-Subtract Single
+fnmadds[.] Floating Negative Multiply-Add Single
+std Store Doubleword
+stdu Store Doubleword with Update
+fcmpu Floating Compare Unordered
+frsp[.] Floating Round to Single-Precision
+fctiw[.] Floating Convert To Integer Word
+fctiwz[.] Floating Convert To Integer Word with round toward Zero
+fdiv[.] Floating Divide
+fsub[.] Floating Subtract
+fadd[.] Floating Add
+fsqrt[.] Floating Square Root
+fsel[.] Floating Select
+fre[.] Floating Reciprocal Estimate
+fmul[.] Floating Multiply
+frsqrte[.] Floating Reciprocal Square Root Estimate
+fmsub[.] Floating Multiply-Subtract
+fmadd[.] Floating Multiply-Add
+fnmsub[.] Floating Negative Multiply-Subtract
+fnmadd[.] Floating Negative Multiply-Add
+fcmpo Floating Compare Ordered
+mtfsb1[.] Move To FPSCR Bit 1
+fneg[.] Floating Negate
+mcrfs Move to Condition Register from FPSCR
+mtfsb0[.] Move To FPSCR Bit 0
+fmr[.] Floating Move Register
+mtfsfi[.] Move To FPSCR Field Immediate
+fnabs[.] Floating Negative Absolute Value
+fabs[.] Floating Absolute Value
+mffs[.] Move From FPSCR
+mtfsf[.] Move To FPSCR Fields
+fctid[.] Floating Convert To Integer Doubleword
+fctidz[.] Floating Convert To Integer Doubleword with round toward Zero
+fcfid[.] Floating Convert From Integer Doubleword
