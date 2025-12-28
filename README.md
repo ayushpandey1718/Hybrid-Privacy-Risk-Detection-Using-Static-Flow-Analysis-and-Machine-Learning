@@ -1,10 +1,7 @@
-# malware-detection
+1. Malware-detection
 
 Experiments in malware detection and classification using machine learning techniques.
 
-## 1. Microsoft Malware Classification Challenge
-
-    https://www.kaggle.com/c/malware-classification
     
 ### 1.1 Feature Engineering
 
