@@ -226,9 +226,9 @@ def generate_family_labels(in_report_file, out_report_file, label_file):
     family_counter_map = {}
     malware_family = 'unknown'
     
-    pwd1 = re.compile('(\w+):(\w+)/(\w+)[!.-/]+(\w+)') # Windows Defender malware definition patterns.
-    pwd2 = re.compile('(\w+):(\w+)/(\w+)')
-    pcav = re.compile('(\w+)\.(\w+)\.(\w+)[!./-](\w+)') # ClamAV malware definition pattern.
+    pwd1 = re.compile(r'(\w+):(\w+)/(\w+)[!.-/]+(\w+)') # Windows Defender malware definition patterns.
+    pwd2 = re.compile(r'(\w+):(\w+)/(\w+)')
+    pcav = re.compile(r'(\w+)\.(\w+)\.(\w+)[!./-](\w+)') # ClamAV malware definition pattern.
     
     counter, family_label_map = get_family_labels(mals, labels) # Get the malware family scalar labels.
 

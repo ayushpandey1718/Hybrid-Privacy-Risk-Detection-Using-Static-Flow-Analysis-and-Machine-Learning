@@ -45,7 +45,7 @@ field_list = [ "Characteristics","Time/Date","Magic","MajorLinkerVersion","Minor
 
 field_list_len = len(field_list)
 
-ptime = re.compile("Time/Date\s+(.+)") # Time/Date pattern for PE Header field.
+ptime = re.compile(r"Time/Date\s+(.+)") # Time/Date pattern for PE Header field.
 
 
 def reduce_column_names(column_names_file):
@@ -246,9 +246,8 @@ def combine_feature_files(feature_file_name, token_file):
     fop = open('data/' + feature_file_name,'w')
     colnames = "file_name," + ",".join(field_list) + "," + ",".join(tokens) + "\n"
     #print("Column names: {:s}".format(colnames))
-    fop.write(colnames)                    
-
-    p1 = re.compile('\d{3,5}-' + feature_file_name) # This is the PID prefix for each file.
+    ptime = re.compile(r"Time/Date\s+(.+)") # Time/Date pattern for PE Header field.
+    p1 = re.compile(r'\d{3,5}-' + feature_file_name) # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     #TEMP FIX: file_list = os.listdir('/opt/vs/')
     counter = 0

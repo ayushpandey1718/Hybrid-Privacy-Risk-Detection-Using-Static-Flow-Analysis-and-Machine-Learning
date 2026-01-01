@@ -1,7 +1,9 @@
 # function_name_clean.py
 
+import re
 
-def sort_function_names()
+
+def sort_function_names():
     # Need to clean up and sort these function names for ASM feature extraction.
     fip = open('data/all-function-column-names-multiline.csv')
     function_names = fip.readlines()
@@ -17,7 +19,7 @@ def sort_function_names()
     return
 
 
-def combine_name_and_api()
+def combine_name_and_api():
     # Combine the sorted function names and API list.
     fip = open('data/sorted-function-names-multiline.txt','r')
     sorted_function_names = fip.readlines()
@@ -43,7 +45,7 @@ def combine_name_and_api()
     return sorted_function_names
 
 
-def calculate_average_name_length()
+def calculate_average_name_length():
     function_count = len(sorted_function_names)
     total_chars = 0
     for func_name in sorted_function_names:
@@ -82,7 +84,7 @@ def truncate_function_names(sorted_function_names):
     return function_column_names
 
 
-def save_reduced_function_names(function_column_names)
+def save_reduced_function_names(function_column_names):
     fop = open('data/sorted-reduced-function-names.txt','w')
 
     for fname in function_column_names:
@@ -95,7 +97,7 @@ def save_reduced_function_names(function_column_names)
 
 def remove_hex_addresses():
     # Use a regex to remove function names that are just hexadecimal addresses.
-    p1 = re.compile('\d\w+h')
+    p1 = re.compile(r'\d\w+h')
     reduced_function_names = []
     fip = open('data/sorted-reduced-function-names.txt','r')
     function_column_names = fip.readlines()
@@ -117,7 +119,6 @@ def remove_hex_addresses():
 
 
 
-
 # Start of Script
 if __name__ == "__main__":
 
@@ -131,4 +132,4 @@ if __name__ == "__main__":
     # Optional
     # remove_hex_addresses()
 
-# End of Script
+

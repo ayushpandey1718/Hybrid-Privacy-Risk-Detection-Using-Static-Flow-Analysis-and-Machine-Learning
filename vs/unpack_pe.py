@@ -131,7 +131,7 @@ class MyEventHandler(winappdbg.EventHandler):
         t = event.get_thread()
         tid = event.get_tid()
 
-    return (t.get_pc(), h.get_params(tid))
+        return (t.get_pc(), h.get_params(tid))
 
 
     ### B.2
@@ -142,7 +142,7 @@ class MyEventHandler(winappdbg.EventHandler):
     #     returns a string of data
     ###
 
-  def guarded_read(self,d,t,addr,size):
+    def guarded_read(self,d,t,addr,size):
       # keep track of breakpoints that we disabled
       # so that we can enable them again after we've
       # finished
@@ -192,7 +192,7 @@ class MyEventHandler(winappdbg.EventHandler):
   #     tuples consisting of API call name and number of args
   ###
 
-  apiHooks = {
+    apiHooks = {
     "kernel32.dll":[
       ("VirtualAlloc",4),
       ("VirtualAllocEx",5),

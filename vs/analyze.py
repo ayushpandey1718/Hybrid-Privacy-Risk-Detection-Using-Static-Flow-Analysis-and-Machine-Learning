@@ -39,7 +39,7 @@ if __name__ == "__main__":
     
     filename = sys.argv[1]
     if os.path.isfile(filename):
-
-
+        print("Analysis for file not implemented.")
     else:
+        print("Analysis for directory not implemented.")
     

@@ -69,7 +69,7 @@ def feature_reduction_percent(percentage, train_data_df, train_labels_df):
     return
     
 
-def combine_feature_sets(feature_set_name)
+def combine_feature_sets(feature_set_name):
     # First load the training data feature sets and training labels
     sorted_pe_asm = pd.read_csv("data/sorted-pe-asm-features-" + feature_set_name + ".csv")
     sorted_pe_hdr = pd.read_csv("data/sorted-pe-header-features-" + feature_set_name + ".csv")
@@ -88,7 +88,7 @@ def combine_feature_sets(feature_set_name)
     combined_train_data = combined_train_data.merge(sorted_file_id, on='file_name')
     combined_train_data = combined_train_data.merge(sorted_trid_id, on='file_name')
     combined_train_data = combined_train_data.merge(sorted_entropy, on='file_name')
-    combined_train_data.to_csv("data/final-combined-train-data-" + feature_set_name ".csv", index=False)
+    combined_train_data.to_csv("data/final-combined-train-data-" + feature_set_name + ".csv", index=False)
 
 
     return combined_train_data

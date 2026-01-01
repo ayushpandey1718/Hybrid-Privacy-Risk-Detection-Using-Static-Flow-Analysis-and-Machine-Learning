@@ -224,7 +224,7 @@ if __name__ == "__main__":
     # DEPRECATED: column_name_file = 'data/all-column-names-single-line-' + sample_set_id + '.txt'
     column_name_file = 'data/all-column-names-multi-line-' + sample_set_id + '.txt'
 
-    pecallgraphs = re.compile('\d{3,5}-pe-call-graphs-' + sample_set_id +'.gv') 
+    pecallgraphs = re.compile(r'\d{3,5}-pe-call-graphs-' + sample_set_id +'.gv') 
 
     file_list = os.listdir(ext_drive)
     call_graph_files = []

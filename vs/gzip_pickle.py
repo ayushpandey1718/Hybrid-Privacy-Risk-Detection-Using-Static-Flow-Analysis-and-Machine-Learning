@@ -56,13 +56,13 @@ if __name__ == "__main__":
         if os.path.isfile(filename):
                 data = load(filename)
                 z,l = data[0],data[1]
-                print "Loaded %s" % data
-                print "z.x = %d z.y = %s" % (z.x,z.y)
-                print "list = %s" % l
+                print("Loaded %s" % data)
+                print("z.x = %d z.y = %s" % (z.x,z.y))
+                print("list = %s" % l)
         else:
                 z = Object()
                 z.x = 666
                 l = [2,4,9]
                 data = (z,l)
                 save(data, filename)
-                print "Saved %s" % data
+                print("Saved %s" % data)

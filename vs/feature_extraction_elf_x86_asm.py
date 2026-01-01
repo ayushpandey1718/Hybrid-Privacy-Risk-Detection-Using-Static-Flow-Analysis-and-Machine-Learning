@@ -442,21 +442,21 @@ def get_column_names(fid_name):
     colnames = []
     
     if "Intel" in fid_name:
-
+        pass
     elif "x86" in fid_name:
-
+        pass
     elif "ARM" in fid_name:
-        
+        pass
     elif "PowerPC" in fid_name:
-        
+        pass
     elif "Motorola" in fid_name:
-        
+        pass
     elif "SPARC" in fid_name:
-        
+        pass
     elif "MIPS" in fid_name:
-        
+        pass
     elif "Renesas" in fid_name: # SuperH
-        
+        pass
         
     return colnames
 

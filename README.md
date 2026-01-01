@@ -1,4 +1,4 @@
-1. Malware-detection
+# malware-detection
 
 Experiments in malware detection and classification using machine learning techniques.
 
