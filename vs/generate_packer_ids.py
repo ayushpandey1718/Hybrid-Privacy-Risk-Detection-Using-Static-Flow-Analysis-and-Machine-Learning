@@ -24,7 +24,7 @@ in_lines = fip.readlines()
 fop = open('data/packer-id.csv','w')
 fop.write('packer_name,packer_id\n')
 fop.write('unknown,0\n')
-p1 = re.compile('\[(.*)\]')
+p1 = re.compile(r'\[(.*)\]')
 out_lines = []
 row = ' '
 counter = 0

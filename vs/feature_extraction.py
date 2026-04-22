@@ -31,8 +31,12 @@
 
 
 import os
-import peutils
-import pefile
+try:
+    import peutils
+    import pefile
+    HAS_PEFILE = True
+except ImportError:
+    HAS_PEFILE = False
 import sys
 import re
 import numpy as np
@@ -178,19 +182,24 @@ def rename_header_files(ext_dir):
     return
 
 # Start of script.
+if __name__ == "__main__":
 
-# TODO: everything
+    # TODO: everything
 
-#start_packer_id_generation_threads()
+    #start_packer_id_generation_threads()
 
-# TEMP filename fix for PE header files.
-ext_dir = '/opt/vs/train1hdr/'
-rename_header_files(ext_dir)
-ext_dir = '/opt/vs/train2hdr/'
-rename_header_files(ext_dir)
-ext_dir = '/opt/vs/train3hdr/'
-rename_header_files(ext_dir)
-ext_dir = '/opt/vs/train4hdr/'
-rename_header_files(ext_dir)
+    # TEMP filename fix for PE header files.
+    ext_dir = '/opt/vs/train1hdr/'
+    if os.path.isdir(ext_dir):
+        rename_header_files(ext_dir)
+    ext_dir = '/opt/vs/train2hdr/'
+    if os.path.isdir(ext_dir):
+        rename_header_files(ext_dir)
+    ext_dir = '/opt/vs/train3hdr/'
+    if os.path.isdir(ext_dir):
+        rename_header_files(ext_dir)
+    ext_dir = '/opt/vs/train4hdr/'
+    if os.path.isdir(ext_dir):
+        rename_header_files(ext_dir)
 
-# End of script.
+    # End of script.

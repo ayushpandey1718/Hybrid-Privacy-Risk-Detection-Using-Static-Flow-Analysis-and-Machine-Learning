@@ -45,7 +45,7 @@ def combine_name_and_api():
     return sorted_function_names
 
 
-def calculate_average_name_length():
+def calculate_average_name_length(sorted_function_names):
     function_count = len(sorted_function_names)
     total_chars = 0
     for func_name in sorted_function_names:

@@ -23,7 +23,7 @@ from csv import writer
 import numpy as np
 import pandas as pd
 import math
-import scipy.misc
+# import scipy.misc  # Removed: deprecated in modern scipy
 import array
 import re
 from sklearn.feature_selection import SelectKBest, SelectPercentile
@@ -71,7 +71,7 @@ def reduce_feature_set(feature_set_file, train_label_file, token_file, reduced_s
         
     # Load and sort the malware sample names.
     sample_names = pd.read_csv(feature_set_file, usecols = [0], na_filter=False)
-    sorted_sample_names = sample_names.sort('file_name')
+    sorted_sample_names = sample_names.sort_values('file_name')
     
     # Now get the labels of the PE malware samples from the label set.
     counter = 0
@@ -106,7 +106,7 @@ def reduce_feature_set(feature_set_file, train_label_file, token_file, reduced_s
         feature_subset = pd.read_csv(feature_set_file, usecols = column_numbers)
         
         # Sort the feature subset on file_name column.
-        sorted_feature_subset = feature_subset.sort('file_name')
+        sorted_feature_subset = feature_subset.sort_values('file_name')
         
         X = sorted_feature_subset.iloc[:,1:] # skip the filename, get the family class label for this feature subset.
 

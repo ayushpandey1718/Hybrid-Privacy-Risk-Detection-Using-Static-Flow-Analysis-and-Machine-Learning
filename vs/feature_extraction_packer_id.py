@@ -57,7 +57,7 @@ def sort_and_save_packer_id_feature_file():
     
     packers = pd.read_csv('data/packer-id-features.csv')
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    sorted_packers = packers.sort('file_name')
+    sorted_packers = packers.sort_values('file_name')
     sorted_packers.to_csv('data/sorted-packer-id-features.csv', index=False)
     sorted_packers.head(20)
     
@@ -76,7 +76,7 @@ def combine_packer_id_files():
     
     fop = open('data/packer-id-features.csv','w')
     fop.write('file_name,packer_name,packer_id,valid_pe,is_packed\n')
-    p1 = re.compile('\d{3,5}-sorted-packer-id-features.csv') # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-sorted-packer-id-features.csv') # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     
@@ -193,7 +193,7 @@ ext_drive = '/opt/vs/train4/'
 #ext_drive = '/opt/vs/apt/'
 
 tfiles = os.listdir(ext_drive)
-quart = len(tfiles)/4
+quart = len(tfiles)//4
 train1 = tfiles[:quart]
 train2 = tfiles[quart:(2*quart)]
 train3 = tfiles[(2*quart):(3*quart)]

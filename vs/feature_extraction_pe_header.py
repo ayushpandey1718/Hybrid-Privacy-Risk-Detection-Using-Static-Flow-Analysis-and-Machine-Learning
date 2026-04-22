@@ -29,7 +29,7 @@ from csv import writer
 import numpy as np
 import pandas as pd
 import math
-import scipy.misc
+# import scipy.misc  # Removed: deprecated in modern scipy
 import array
 import time as tm
 import re
@@ -267,7 +267,7 @@ def combine_feature_files(feature_file_name, token_file):
     # the feature set before sorting and training.
     #features = pd.read_csv('data/' + feature_file_name)
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    #sorted_features = features.sort('file_name')
+    #sorted_features = features.sort_values('file_name')
     #sorted_features.to_csv('data/sorted-' + feature_file_name, index=False)
     
     print('Completed combine of {:d} PE header file features.'.format(counter))  
@@ -348,7 +348,7 @@ if __name__ == "__main__":
                           
     # Divide the train files into four groups for multiprocessing.
 
-    quart = len(tfiles)/4
+    quart = len(tfiles)//4
     train1 = tfiles[:quart]
     train2 = tfiles[quart:(2*quart)]
     train3 = tfiles[(2*quart):(3*quart)]

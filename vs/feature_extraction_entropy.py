@@ -22,7 +22,7 @@ from csv import writer
 import numpy as np
 import pandas as pd
 import math
-import scipy.misc
+# import scipy.misc  # Removed: deprecated in modern scipy
 import array
 import time as tm
 import re
@@ -69,7 +69,7 @@ def entropy_counter(byte_code, code_length):
 def sort_and_save_entropy_feature_file():
     entropys = pd.read_csv('data/entropy-features.csv')
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    sorted_entropys = entropys.sort('file_name')
+    sorted_entropys = entropys.sort_values('file_name')
     sorted_entropys.to_csv('data/sorted-entropy-features.csv', index=False)
     sorted_entropys.head(20)
     
@@ -85,7 +85,7 @@ def combine_entropy_files():
     # 5. Sort and write to data/sorted-packer-id-features.csv
     fop = open('data/entropy-features.csv','w')
     fop.write('file_name,entropy,file_size\n')
-    p1 = re.compile('\d{3,5}-entropy-features-bin.csv') # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-entropy-features-bin.csv') # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     for file_name in file_list:
@@ -160,122 +160,132 @@ def extract_binary_features(tfiles):
     print("Completed processing {:d} rows for feature file {:s}".format(ftot,feature_file))
         
     return
-    
-    
+
 # Start of Script
+if __name__ == "__main__":
 
-# Divide the train files into four groups for multiprocessing.
+    # Divide the train files into four groups for multiprocessing.
 
-# TODO: add command line arguments to specify file names.
+    # TODO: add command line arguments to specify file names.
 
-#ext_drive = '/opt/vs/train1/'
-#ext_drive = '/opt/vs/train2/'
-#ext_drive = '/opt/vs/train3/'
-ext_drive = '/opt/vs/train4/'
-#ext_drive = '/opt/vs/apt/'
-#ext_drive = '/opt/vs/train/'
+    #ext_drive = '/opt/vs/train1/'
+    #ext_drive = '/opt/vs/train2/'
+    #ext_drive = '/opt/vs/train3/'
+    ext_drive = '/opt/vs/train4/'
+    #ext_drive = '/opt/vs/apt/'
+    #ext_drive = '/opt/vs/train/'
 
+    if not os.path.isdir(ext_drive):
+        print("Warning: ext_drive '{}' does not exist. Exiting.".format(ext_drive))
+        import sys
+        sys.exit(1)
 
-tfiles = os.listdir(ext_drive)
-quart = len(tfiles)/4
-train1 = tfiles[:quart]
-train2 = tfiles[quart:(2*quart)]
-train3 = tfiles[(2*quart):(3*quart)]
-train4 = tfiles[(3*quart):]
-print("Files: {:d} - {:d} - {:d}".format(len(tfiles), quart, (len(train1)+len(train2)+len(train3)+len(train4))))
-trains = [train1, train2, train3, train4]
-#p = Pool(4)
-#p.map(extract_binary_features, trains)
+    tfiles = os.listdir(ext_drive)
+    quart = len(tfiles)//4
+    train1 = tfiles[:quart]
+    train2 = tfiles[quart:(2*quart)]
+    train3 = tfiles[(2*quart):(3*quart)]
+    train4 = tfiles[(3*quart):]
+    print("Files: {:d} - {:d} - {:d}".format(len(tfiles), quart, (len(train1)+len(train2)+len(train3)+len(train4))))
+    trains = [train1, train2, train3, train4]
+    #p = Pool(4)
+    #p.map(extract_binary_features, trains)
 
-print("Completed Entropy Generation for {:d} Files.".format(len(tfiles)))
+    print("Completed Entropy Generation for {:d} Files.".format(len(tfiles)))
 
-#combine_entropy_files()
+    #combine_entropy_files()
 
-# End of Script
-    
-# TEST: problem with train4 (vs264), 2 of the 4 processes would never finish, cause unknown!!!
-
-# Cause: memory exhaustion with no error/exception messages.
-# Solution: Run as a single process.
-
-
-
-fip1 = open('data/3019-entropy-features-bin.csv','r')
-fip2 = open('data/3020-entropy-features-bin.csv','r')
-fip3 = open('data/3021-entropy-features-bin.csv','r')
-fip4 = open('data/3022-entropy-features-bin.csv','r')
-
-lines1 = fip1.readlines()
-lines2 = fip2.readlines()
-lines3 = fip3.readlines()
-lines4 = fip4.readlines()
-
-file_list = []
-counter = 0
-
-for line in lines1:
-    tokens = line.split(',')
-    if len(tokens) > 1:
-        file_name = "VirusShare_" + tokens[0]
-        file_list.append(file_name)
-        counter += 1
-    
-for line in lines2:
-    tokens = line.split(',')
-    if len(tokens) > 1:
-        file_name = "VirusShare_" + tokens[0]
-        file_list.append(file_name)
-        counter += 1
-    
-for line in lines3:
-    tokens = line.split(',')
-    if len(tokens) > 1:
-        file_name = "VirusShare_" + tokens[0]
-        file_list.append(file_name)
-        counter += 1
-    
-for line in lines4:
-    tokens = line.split(',')
-    if len(tokens) > 1:
-        file_name = "VirusShare_" + tokens[0]
-        file_list.append(file_name)
-        counter += 1
-    
-    
-processed_file_count = counter
-
-print("Read {:d} file names.".format(counter))
-
-unprocessed_file_list = []
-counter = 0
-
-for idx, file_name in enumerate(tfiles):
-    if file_name not in file_list:
-        unprocessed_file_list.append(file_name)
-        counter += 1
+    # End of Script
         
-    if (idx % 1000) == 0:
-        print("{:d} - filename: {:s} - counter: {:d}".format(idx, file_name, counter))
+    # TEST: problem with train4 (vs264), 2 of the 4 processes would never finish, cause unknown!!!
+
+    # Cause: memory exhaustion with no error/exception messages.
+    # Solution: Run as a single process.
+
+    data_files_exist = (
+        os.path.isfile('data/3019-entropy-features-bin.csv') and
+        os.path.isfile('data/3020-entropy-features-bin.csv') and
+        os.path.isfile('data/3021-entropy-features-bin.csv') and
+        os.path.isfile('data/3022-entropy-features-bin.csv')
+    )
+
+    if data_files_exist:
+        fip1 = open('data/3019-entropy-features-bin.csv','r')
+        fip2 = open('data/3020-entropy-features-bin.csv','r')
+        fip3 = open('data/3021-entropy-features-bin.csv','r')
+        fip4 = open('data/3022-entropy-features-bin.csv','r')
+
+        lines1 = fip1.readlines()
+        lines2 = fip2.readlines()
+        lines3 = fip3.readlines()
+        lines4 = fip4.readlines()
+
+        file_list = []
+        counter = 0
+
+        for line in lines1:
+            tokens = line.split(',')
+            if len(tokens) > 1:
+                file_name = "VirusShare_" + tokens[0]
+                file_list.append(file_name)
+                counter += 1
+            
+        for line in lines2:
+            tokens = line.split(',')
+            if len(tokens) > 1:
+                file_name = "VirusShare_" + tokens[0]
+                file_list.append(file_name)
+                counter += 1
+            
+        for line in lines3:
+            tokens = line.split(',')
+            if len(tokens) > 1:
+                file_name = "VirusShare_" + tokens[0]
+                file_list.append(file_name)
+                counter += 1
+            
+        for line in lines4:
+            tokens = line.split(',')
+            if len(tokens) > 1:
+                file_name = "VirusShare_" + tokens[0]
+                file_list.append(file_name)
+                counter += 1
+            
+            
+        processed_file_count = counter
+
+        print("Read {:d} file names.".format(counter))
+
+        unprocessed_file_list = []
+        counter = 0
+
+        for idx, file_name in enumerate(tfiles):
+            if file_name not in file_list:
+                unprocessed_file_list.append(file_name)
+                counter += 1
+                
+            if (idx % 1000) == 0:
+                print("{:d} - filename: {:s} - counter: {:d}".format(idx, file_name, counter))
 
 
-unprocessed_file_count = counter
+        unprocessed_file_count = counter
 
-print("Found {:d} unprocessed files.".format(counter))
+        print("Found {:d} unprocessed files.".format(counter))
 
-print("Total files: {:d}".format(processed_file_count + unprocessed_file_count))
+        print("Total files: {:d}".format(processed_file_count + unprocessed_file_count))
 
-#fop = open("data/unprocessed-files.txt","w")
-#fop.writelines(unprocessed_file_list)
-#fop.close()
+        #fop = open("data/unprocessed-files.txt","w")
+        #fop.writelines(unprocessed_file_list)
+        #fop.close()
 
-extract_binary_features(unprocessed_file_list)
+        extract_binary_features(unprocessed_file_list)
 
-combine_entropy_files()
-
-
-fip1.close()
-fip2.close()
-fip3.close()
-fip4.close()
+        combine_entropy_files()
 
 
+        fip1.close()
+        fip2.close()
+        fip3.close()
+        fip4.close()
+    else:
+        print("Warning: Entropy data files not found. Skipping reprocessing step.")

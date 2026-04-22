@@ -43,8 +43,7 @@ def save_token_counts(token_counter_map, out_file_name):
     csv_wouter = writer(fop)
 
     outlines = []
-    sorted_keys = token_counter_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(token_counter_map.keys())
     counter = 0
     
     for key in sorted_keys:
@@ -84,11 +83,11 @@ def generate_pe_tokens(mp_params):
     file_list = mp_params.file_list
     out_count_file = mp_params.count_file
     
-    psections = re.compile('\s+\d{1,2}\s+(\.\w+|\w+)\s+\d+')  # Pattern for section names.
-    pdlls = re.compile('\s+DLL Name: (\w+)')                  # Pattern for import DLL names.
-    pfunctions = re.compile('\s+\w+\s+\d{1,4}\s+(.+)\s*')     # Pattern for import function names.
-    preloc = re.compile('\s+reloc')                           # Pattern for relocation entries.
-    pexports = re.compile('\s+\[\s*\d+\]\s+(\w+)')            # Pattern for exported function names.
+    psections = re.compile(r'\s+\d{1,2}\s+(\.\w+|\w+)\s+\d+')  # Pattern for section names.
+    pdlls = re.compile(r'\s+DLL Name: (\w+)')                  # Pattern for import DLL names.
+    pfunctions = re.compile(r'\s+\w+\s+\d{1,4}\s+(.+)\s*')     # Pattern for import function names.
+    preloc = re.compile(r'\s+reloc')                           # Pattern for relocation entries.
+    pexports = re.compile(r'\s+\[\s*\d+\]\s+(\w+)')            # Pattern for exported function names.
     
     token_counter_map = {}
     counter = 0
@@ -172,8 +171,7 @@ def save_combine(token_counter_map, out_file_name):
     csv_wouter.writerow(cols)
     
     outlines = []
-    sorted_keys = token_counter_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(token_counter_map.keys())
     counter = 0
     
     for key in sorted_keys:
@@ -205,7 +203,7 @@ def combine_token_files(token_file, count_file):
     # 5. Sort and write to data/sorted-token-features.csv
 
     
-    p1 = re.compile('\d{3,5}-' + count_file) # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-' + count_file) # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     token_map = {}
@@ -270,7 +268,7 @@ if __name__ == "__main__":
     for fname in file_list:
         tfiles.append(ext_drive + fname)
         
-    quart = len(tfiles)/4
+    quart = len(tfiles)//4
     train1 = tfiles[:quart]
     train2 = tfiles[quart:(2*quart)]
     train3 = tfiles[(2*quart):(3*quart)]

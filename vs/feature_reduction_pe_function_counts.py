@@ -21,7 +21,7 @@ from csv import writer
 import numpy as np
 import pandas as pd
 import math
-import scipy.misc
+# import scipy.misc  # Removed: deprecated in modern scipy
 import array
 import re
 from sklearn.feature_selection import SelectKBest, SelectPercentile

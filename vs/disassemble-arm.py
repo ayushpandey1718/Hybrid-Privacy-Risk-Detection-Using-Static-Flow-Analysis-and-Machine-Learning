@@ -30,7 +30,7 @@
 # Date  : 07/09/2016
 
 
-from optparse import OptionParser
+import argparse
 import subprocess as sub
 import os
 import sys
@@ -124,17 +124,17 @@ def disassemble_arm_binaries(file_list):
 def run_processes(file_list):
     # Spawn worker processes.
     
-    quart = len(file_list)/4
-    train1 = tfiles[:quart]
-    train2 = tfiles[quart:(2*quart)]
-    train3 = tfiles[(2*quart):(3*quart)]
-    train4 = tfiles[(3*quart):]
+    quart = len(file_list)//4
+    train1 = file_list[:quart]
+    train2 = file_list[quart:(2*quart)]
+    train3 = file_list[(2*quart):(3*quart)]
+    train4 = file_list[(3*quart):]
 
-    print("Files: {:d} - {:d} - {:d}".format(len(tfiles), quart, (len(train1)+len(train2)+len(train3)+len(train4))))
+    print("Files: {:d} - {:d} - {:d}".format(len(file_list), quart, (len(train1)+len(train2)+len(train3)+len(train4))))
 
     trains = [train1, train2, train3, train4]
     p = Pool(4)
-    p.map(disassemble_pe_binaries, trains)
+    p.map(disassemble_arm_binaries, trains)
     
     return
 
@@ -150,27 +150,25 @@ def print_help():
 # Start of Script
 
 
-parser = OptionParser()
-parser.add_option("-w", "--writelist", action="store_true", dest="writefilelist", default=False)
-parser.add_option("-i", "--inputfile", dest="inputfilename")
-parser.add_option("-o", "--outputfile", dest="outputfilename")
-parser.add_option("-f", "--fileidfeature", dest="featurefilename")
-parser.add_option("-p", "--packeridfeature", dest="packerfilename")
-parser.add_option("-t", "--trididfeature", dest="tridfilname")
-parser.add_option("-e", "--extdrive", dest="externaldrive")
-#parser.add_option("-h", "--help", action="store_true", dest="printhelp", default=False)
+parser = argparse.ArgumentParser(description="Disassemble ARM binaries")
+parser.add_argument("-w", "--writelist", action="store_true", dest="writefilelist", default=False)
+parser.add_argument("-i", "--inputfile", dest="inputfilename")
+parser.add_argument("-o", "--outputfile", dest="outputfilename")
+parser.add_argument("-f", "--fileidfeature", dest="featurefilename")
+parser.add_argument("-p", "--packeridfeature", dest="packerfilename")
+parser.add_argument("-t", "--trididfeature", dest="tridfilname")
+parser.add_argument("-e", "--extdrive", dest="externaldrive")
 
-(options, args) = parser.parse_args()
+args = parser.parse_args()
 
 # TODO: add code for options
 
 # Load the malware packer id features sets.
-ext_drive = options.externaldrive
-feature_file = options.featurefilename
-in_unpacked_file_list = options.inputfilename
-out_unpacked_file_list = options.outputfilename
-write_file_list = options.writefilelist
-#print_help = options.printhelp
+ext_drive = args.externaldrive
+feature_file = args.featurefilename
+in_unpacked_file_list = args.inputfilename
+out_unpacked_file_list = args.outputfilename
+write_file_list = args.writefilelist
 
 # Start of Script
 
@@ -183,9 +181,11 @@ packer_id_file = 'data/sorted-packer-id-features-vs251.csv'
 file_id_file = 'data/sorted-file-id-features-vs251.csv'
 trid_id_file = 'data/sorted-trid-id-features-vs251.csv'
     
-unflist = get_arm_file_list(packer_id_file, file_id_file, trid_id_file)
-
-disassemble_elf_binaries(unflist)
+if os.path.isfile(packer_id_file) and os.path.isfile(file_id_file) and os.path.isfile(trid_id_file):
+    unflist = get_arm_file_list(packer_id_file, file_id_file, trid_id_file)
+    disassemble_arm_binaries(unflist)
+else:
+    print("Warning: Required data files not found. Skipping ARM disassembly.")
     
 # END TEST
 

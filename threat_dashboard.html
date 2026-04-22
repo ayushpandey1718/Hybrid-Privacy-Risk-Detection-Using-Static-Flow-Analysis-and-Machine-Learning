@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hybrid Privacy Risk Detection</title>
+  <meta name="description"
+    content="Advanced malware and threat risk detection dashboard powered by machine learning analysis of 712,540+ samples across 4,372 malware families." />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="threat_dashboard.css" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Particle Background -->
+  <canvas id="particle-canvas"></canvas>
+
+  <div class="app-container">
+
+    <!-- ═══════════════ NAV BAR ═══════════════ -->
+    <nav class="nav-bar" id="nav-bar">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🛡️</div>
+        <div class="nav-logo-text"><span>PRIVACY</span>DETECT</div>
+      </div>
+      <div class="nav-status">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>Engine Online</span>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>ML Models Loaded</span>
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot warning"></div>
+          <span>712K Signatures</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <section class="hero" id="hero">
+      <div class="hero-badge">
+        🔬 Powered by ExtraTrees + XGBoost Ensemble • 99.81% Detection Rate
+      </div>
+      <h1 class="hero-title">
+        HYBRID<br />
+        <span class="gradient-text">Risk Detection</span>
+      </h1>
+      <p class="hero-subtitle">
+        Advanced threat intelligence dashboard analyzing application risk across entropy anomalies,
+        call graph complexity, API abuse patterns, and ML-powered classification from 712,540+ labeled samples.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="btn-demo-scan">
+          <span class="btn-icon"></span>
+          Run the Analysis
+        </button>
+        <label class="btn btn-secondary file-input-wrapper">
+          <span class="btn-icon">📁</span>
+          Upload File to Scan
+          <input type="file" id="file-input" />
+        </label>
+      </div>
+    </section>
+
+    <!-- ═══════════════ STATS BAR ═══════════════ -->
+    <section class="stats-bar" id="stats-bar">
+      <div class="stat-card">
+        <div class="stat-icon cyan">🧬</div>
+        <div class="stat-info">
+          <div class="stat-value cyan" data-count="712540">0</div>
+          <div class="stat-label">Total Samples</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon magenta">🦠</div>
+        <div class="stat-info">
+          <div class="stat-value magenta" data-count="498320">0</div>
+          <div class="stat-label">Malicious Detected</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">✅</div>
+        <div class="stat-info">
+          <div class="stat-value green" data-count="214220">0</div>
+          <div class="stat-label">Benign Verified</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon amber">🔍</div>
+        <div class="stat-info">
+          <div class="stat-value amber" data-count="4372">0</div>
+          <div class="stat-label">Malware Families</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">🎯</div>
+        <div class="stat-info">
+          <div class="stat-value red" data-count="99.81" data-decimal="true" data-suffix="%">0%</div>
+          <div class="stat-label">Detection Rate</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ SCAN SECTION ═══════════════ -->
+    <section class="scan-section" id="scan-section">
+      <div class="scan-card">
+        <div class="scan-header">
+          <div class="scan-title">
+            <span class="icon">🔬</span>
+            Threat Analysis Scanner
+          </div>
+          <div class="scan-controls">
+            <div class="section-tag">Multi-Vector Analysis</div>
+          </div>
+        </div>
+        <div class="scan-body">
+          <!-- Drop Zone (shown initially) -->
+          <div id="scan-drop-zone" class="scan-drop-zone">
+            <div class="scan-drop-zone-icon">🗂️</div>
+            <div class="scan-drop-zone-text">Drop a file here or click to upload</div>
+            <div class="scan-drop-zone-hint">Supports PE, ELF, APK, PDF, and any binary format • Or click "Run Demo
+              Analysis" above</div>
+          </div>
+
+          <!-- Progress (shown during scan) -->
+          <div id="scan-progress" class="scan-progress">
+            <div class="scan-stage">
+              <div class="scan-stage-item" data-stage="init">INIT</div>
+              <div class="scan-stage-item" data-stage="entropy">ENTROPY</div>
+              <div class="scan-stage-item" data-stage="callgraph">CALL GRAPH</div>
+              <div class="scan-stage-item" data-stage="api-scan">API SCAN</div>
+              <div class="scan-stage-item" data-stage="packer">PACKER</div>
+              <div class="scan-stage-item" data-stage="ml-classify">ML CLASSIFY</div>
+              <div class="scan-stage-item" data-stage="complete">COMPLETE</div>
+            </div>
+            <div class="scan-progress-bar-wrapper">
+              <div class="scan-progress-bar" id="scan-progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="scan-log" id="scan-log"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ RESULTS SECTION (hidden until scan completes) ═══════════════ -->
+    <section id="results-section" class="hidden">
+
+      <!-- Risk Gauge + Radar -->
+      <div class="dashboard-grid" style="margin-bottom: 36px;">
+        <div class="glass-card">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="icon">🎯</span>
+              Overall Risk Assessment
+            </div>
+            <div class="section-tag">Real-Time</div>
+          </div>
+          <div class="risk-gauge-container risk-low" id="gauge-container">
+            <div class="gauge-wrapper">
+              <div class="gauge-pulse"></div>
+              <svg class="gauge-svg" viewBox="0 0 240 240">
+                <circle class="gauge-bg" cx="120" cy="120" r="110" />
+                <circle class="gauge-fill low" id="gauge-fill" cx="120" cy="120" r="110" stroke-dasharray="691.15"
+                  stroke-dashoffset="691.15" />
+              </svg>
+              <div class="gauge-center">
+                <div class="gauge-score" id="gauge-score">0</div>
+                <div class="gauge-label" id="gauge-label">AWAITING SCAN</div>
+                <div class="gauge-sublabel">Threat Score</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="icon">📡</span>
+              Threat Vector Radar
+            </div>
+            <div class="section-tag">6-Factor Analysis</div>
+          </div>
+          <div class="chart-container tall">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Risk Factors Breakdown -->
+      <div class="glass-card full-width" style="margin-bottom: 36px;">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">📊</span>
+            Risk Factor Breakdown
+          </div>
+          <div class="section-tag">Per-Factor Scoring</div>
+        </div>
+        <div class="risk-factors" id="risk-factors">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ INTELLIGENCE DASHBOARD ═══════════════ -->
+    <div class="dashboard-grid">
+
+      <!-- Malware Class Distribution -->
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">🦠</span>
+            Malware Class Distribution
+          </div>
+          <div class="section-tag">9 Classes • 10,868 Samples</div>
+        </div>
+        <div class="chart-container tall">
+          <canvas id="classDoughnut"></canvas>
+        </div>
+      </div>
+
+      <!-- Malware Type Breakdown -->
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">📈</span>
+            Malware Type Breakdown
+          </div>
+          <div class="section-tag">8,334 Types</div>
+        </div>
+        <div class="chart-container tall">
+          <canvas id="typeBarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Entropy Distribution -->
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">🔥</span>
+            Entropy Distribution Analysis
+          </div>
+          <div class="section-tag">65,536 Samples</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="entropyChart"></canvas>
+        </div>
+      </div>
+
+      <!-- API Threat Polar -->
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">⚡</span>
+            Suspicious API Risk Map
+          </div>
+          <div class="section-tag">700+ APIs Tracked</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="apiPolarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Malware Family Heatmap -->
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">🗺️</span>
+            Malware Family Heatmap
+          </div>
+          <div class="section-tag">Top 24 Families</div>
+        </div>
+        <div class="heatmap-grid" id="heatmap-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Threat Timeline -->
+      <div class="glass-card">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">📅</span>
+            Recent Threat Intelligence
+          </div>
+          <div class="section-tag">Live Feed</div>
+        </div>
+        <div class="threat-timeline" id="threat-timeline">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- API Threat Table -->
+      <div class="glass-card full-width">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">🔐</span>
+            Suspicious API Category Analysis
+          </div>
+          <div class="section-tag">10 Attack Vectors</div>
+        </div>
+        <table class="threat-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>APIs Tracked</th>
+              <th>Threat Level</th>
+              <th>Risk Score</th>
+            </tr>
+          </thead>
+          <tbody id="api-table-body">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Malware Class Details -->
+      <div class="glass-card full-width">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="icon">🧬</span>
+            Malware Class Intelligence
+          </div>
+          <div class="section-tag">Detailed Profiles</div>
+        </div>
+        <table class="threat-table">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Family</th>
+              <th>Samples</th>
+              <th>Risk Level</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color: var(--cyan);">1</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Ramnit</td>
+              <td>1,541</td>
+              <td><span class="threat-badge high">HIGH</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Banking
+                trojan — steals credentials, injects into browsers</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">2</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Lollipop</td>
+              <td>2,478</td>
+              <td><span class="threat-badge medium">MEDIUM</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Adware —
+                browser hijacking, popup injection</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">3</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Kelihos_ver3</td>
+              <td>2,942</td>
+              <td><span class="threat-badge high">HIGH</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Botnet —
+                spam relay, DDoS, credential theft</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">4</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Vundo</td>
+              <td>475</td>
+              <td><span class="threat-badge high">HIGH</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Trojan —
+                fake antivirus, rogue security alerts</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">5</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Simda</td>
+              <td>42</td>
+              <td><span class="threat-badge critical">CRITICAL</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Backdoor —
+                remote access, zero-day exploits</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">6</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Tracur</td>
+              <td>751</td>
+              <td><span class="threat-badge medium">MEDIUM</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Trojan
+                downloader — fetches additional payloads</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">7</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Kelihos_ver1</td>
+              <td>398</td>
+              <td><span class="threat-badge high">HIGH</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Botnet —
+                older variant, email spam campaigns</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">8</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Obfuscator.ACY</td>
+              <td>1,228</td>
+              <td><span class="threat-badge high">HIGH</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Code
+                obfuscator — evades static analysis detection</td>
+            </tr>
+            <tr>
+              <td style="color: var(--cyan);">9</td>
+              <td style="color: var(--text-primary); font-weight: 500;">Gatak</td>
+              <td>1,013</td>
+              <td><span class="threat-badge medium">MEDIUM</span></td>
+              <td style="font-family: var(--font-display); font-size: 0.72rem; color: var(--text-secondary);">Trojan —
+                click fraud, ad injection, data exfiltration</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+      <div class="footer-text">
+        <span>PRIVACY DETECT</span> • Hybrid Privacy Risk Detection System • Powered by ML Classification Engine<br />
+        Dataset: 712,540 Samples • 4,372 Families • 12,846 Variants • ExtraTrees + XGBoost Ensemble
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Dashboard JS -->
+  <script src="threat_dashboard.js"></script>
+</body>
+
+</html>

@@ -489,7 +489,7 @@ def validate_disassembly(asm_path, hdr_path, file_ext):
 def run_disassembly_processes(tfiles):
     # Spawn worker processes.
     
-    quart = len(tfiles)/4
+    quart = len(tfiles)//4
     train1 = tfiles[:quart]
     train2 = tfiles[quart:(2*quart)]
     train3 = tfiles[(2*quart):(3*quart)]
@@ -507,7 +507,7 @@ def run_disassembly_processes(tfiles):
 def run_header_extraction_processes(tfiles):
     # Spawn worker processes.
     
-    quart = len(tfiles)/4
+    quart = len(tfiles)//4
     train1 = tfiles[:quart]
     train2 = tfiles[quart:(2*quart)]
     train3 = tfiles[(2*quart):(3*quart)]

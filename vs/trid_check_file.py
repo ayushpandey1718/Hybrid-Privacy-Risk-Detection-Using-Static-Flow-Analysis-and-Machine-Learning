@@ -69,10 +69,10 @@ def process_trids(file_list):
         if (os.path.isfile(file_path1)):
             #print("File: {:s}".format(file_path1))
             signat = sub.check_output(["/opt/vs/trid", file_path1])
-            components = signat.split('\n')
+            components = signat.split(b'\n')
             for idx2, line in enumerate(components):
-                if line.startswith("Collect"):
-                    high_score_line = components[idx2 + 1] + "\n"
+                if line.startswith(b"Collect"):
+                    high_score_line = components[idx2 + 1].decode('utf-8', errors='replace') + "\n"
                     out_lines.append(high_score_line) # If we find a TrID signature the next line
                     break                             # contains the highest probability file type.
             
@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     for idx, ext_drive in enumerate(ext_drive_list):
         tfiles = os.listdir(ext_drive)
-        quart = len(tfiles)/4
+        quart = len(tfiles)//4
         train1 = tfiles[:quart]
         train2 = tfiles[quart:(2*quart)]
         train3 = tfiles[(2*quart):(3*quart)]
@@ -136,11 +136,11 @@ if __name__ == "__main__":
 
         print('Completed processing {:d} files.'.format(len(tfiles))) 
 
-    combine_magic_reports('data/magic-reports-file-all-trains.txt', '\d{3,5}-file-id.csv')
+    combine_magic_reports('data/magic-reports-file-all-trains.txt', r'\d{3,5}-file-id.csv')
 
     for idx, ext_drive in enumerate(ext_drive_list):
         tfiles = os.listdir(ext_drive)
-        quart = len(tfiles)/4
+        quart = len(tfiles)//4
         train1 = tfiles[:quart]
         train2 = tfiles[quart:(2*quart)]
         train3 = tfiles[(2*quart):(3*quart)]
@@ -154,7 +154,7 @@ if __name__ == "__main__":
 
         print('Completed processing {:d} files.'.format(len(tfiles)))
         
-    combine_magic_reports('data/magic-reports-trid-all-trains.txt', '\d{3,5}-trid-id.csv')
+    combine_magic_reports('data/magic-reports-trid-all-trains.txt', r'\d{3,5}-trid-id.csv')
 
 # End of Script
     

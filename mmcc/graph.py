@@ -5,12 +5,15 @@ facts and functionalities of graphs.
 
 class Graph(object):
 
-    def __init__(self):
+    def __init__(self, graph_dict=None):
         """ initializes a graph object """
-        self.__graph_dict = {}
+        if graph_dict is None:
+            self.__graph_dict = {}
+        else:
+            self.__graph_dict = graph_dict
         self.gname = "none"
-        self.edge_count = 0
-        self.vertex_count = 0
+        self.edge_count = sum([len(v) for v in self.__graph_dict.values()]) if graph_dict else 0
+        self.vertex_count = len(self.__graph_dict) if graph_dict else 0
  
     def vertices(self):
         """ returns the vertices of a graph """
@@ -142,10 +145,10 @@ class Graph(object):
         for vertex in sorted(self.__graph_dict.keys()):
             # res += str(counter)
             # if (len(self.__graph_dict[vertex]) > 0):
-                res += str(vertex) + " -> "
-                res += str(self.__graph_dict[vertex])
-                res += "\n"
-                counter += 1      
+            res += str(vertex) + " -> "
+            res += str(self.__graph_dict[vertex])
+            res += "\n"
+            counter += 1      
         return res
     
     def to_str_multi_line_no_leaf(self):
@@ -194,7 +197,7 @@ class Graph(object):
         if (str_type == 'graphviz'):
             return self.to_str_graphviz()
         
-        return self.to_string_single_line_sorted()
+        return self.to_str_single_line_sorted()
         
         
     def find_isolated_vertices(self):
@@ -202,15 +205,16 @@ class Graph(object):
         graph = self.__graph_dict
         isolated = []
         for vertex in graph:
-            print(isolated, vertex)
             if not graph[vertex]:
                 isolated += [vertex]
         return isolated
 
-    def find_path(self, start_vertex, end_vertex, path=[]):
+    def find_path(self, start_vertex, end_vertex, path=None):
         """ find a path from start_vertex to end_vertex 
             in graph """
         graph = self.__graph_dict
+        if path is None:
+            path = []
         path = path + [start_vertex]
         if start_vertex == end_vertex:
             return path
@@ -226,10 +230,12 @@ class Graph(object):
         return None
     
 
-    def find_all_paths(self, start_vertex, end_vertex, path=[]):
+    def find_all_paths(self, start_vertex, end_vertex, path=None):
         """ find all paths from start_vertex to 
             end_vertex in graph """
-        graph = self.__graph_dict 
+        graph = self.__graph_dict
+        if path is None:
+            path = []
         path = path + [start_vertex]
         if start_vertex == end_vertex:
             return [path]
@@ -252,8 +258,8 @@ class Graph(object):
         gdict = self.__graph_dict        
         vertices = gdict.keys() 
         if not start_vertex:
-            # chosse a vertex from graph as a starting point
-            start_vertex = vertices[0]
+            # choose a vertex from graph as a starting point
+            start_vertex = list(vertices)[0]
         vertices_encountered.add(start_vertex)
         if len(vertices_encountered) != len(vertices):
             for vertex in gdict[start_vertex]:
@@ -308,21 +314,21 @@ class Graph(object):
 
     def delta_min(self):
         """ the minimum degree of the vertices """
-        min = 100000000
+        min_degree = 100000000
         for vertex in self.__graph_dict:
             vertex_degree = self.vertex_degree(vertex)
-            if vertex_degree < min:
-                min = vertex_degree
-        return min
+            if vertex_degree < min_degree:
+                min_degree = vertex_degree
+        return min_degree
         
     def delta_max(self):
         """ the maximum degree of the vertices """
-        max = 0
+        max_degree = 0
         for vertex in self.__graph_dict:
             vertex_degree = self.vertex_degree(vertex)
-            if vertex_degree > max:
-                max = vertex_degree
-        return max
+            if vertex_degree > max_degree:
+                max_degree = vertex_degree
+        return max_degree
 
     def density(self):
         """ method to calculate the density of a graph """
@@ -408,10 +414,10 @@ if __name__ == "__main__":
     print(graph.find_all_paths("a", "e"))
 
     print("The maximum degree of the graph is:")
-    print(graph.Delta())
+    print(graph.delta_max())
 
     print("The minimum degree of the graph is:")
-    print(graph.delta())
+    print(graph.delta_min())
 
     print("Edges:")
     print(graph.edges())
@@ -436,10 +442,10 @@ if __name__ == "__main__":
     print(graph)
 
     print("Add edge ('x','y'): ")
-    graph.add_edge(('x', 'y'))
+    graph.add_edge('x', 'y')
     print(graph)
 
     print("Add edge ('a','d'): ")
-    graph.add_edge(('a', 'd'))
+    graph.add_edge('a', 'd')
     print(graph)
 

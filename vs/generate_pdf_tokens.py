@@ -31,8 +31,7 @@ def save_token_counts(token_counter_map, out_file_name):
     csv_wouter.writerow(["token_name","count"])
 
     outlines = []
-    sorted_keys = token_counter_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(token_counter_map.keys())
     counter = 0
     
     for key in sorted_keys:

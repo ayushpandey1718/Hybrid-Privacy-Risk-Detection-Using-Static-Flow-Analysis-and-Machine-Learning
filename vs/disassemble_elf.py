@@ -145,7 +145,7 @@ def disassemble_elf_binaries(file_list, fid_list):
 def run_processes(file_list):
     # Spawn worker processes.
     
-    quart = len(file_list)/4
+    quart = len(file_list)//4
     train1 = tfiles[:quart]
     train2 = tfiles[quart:(2*quart)]
     train3 = tfiles[(2*quart):(3*quart)]

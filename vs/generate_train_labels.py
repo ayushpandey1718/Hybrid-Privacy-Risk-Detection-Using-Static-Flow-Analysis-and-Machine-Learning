@@ -44,8 +44,7 @@ def save_family_counts(family_counter_map):
     cols = ['malware_type','count'] # write out the column names.
     csv_wouter.writerow(cols)
     outlines = []
-    sorted_keys = family_counter_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(family_counter_map.keys())
     counter = 0
     for key in sorted_keys:
         outlines.append([key, family_counter_map[key]])
@@ -73,8 +72,7 @@ def save_sample_counts(sample_counter_map):
     cols = ['malware_type','count'] # write out the column names.
     csv_wouter.writerow(cols)
     outlines = []
-    sorted_keys = sample_counter_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(sample_counter_map.keys())
     counter = 0
     for key in sorted_keys:
         outlines.append([key, sample_counter_map[key]])
@@ -103,8 +101,7 @@ def save_family_labels(family_label_map):
     csv_wouter.writerow(cols)
     outlines = []
     counter = 0
-    sorted_keys = family_label_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(family_label_map.keys())
     for key in sorted_keys:
         outlines.append([key, family_label_map[key]])
         counter += 1
@@ -133,8 +130,7 @@ def save_sample_labels(scalar_label_map):
     csv_wouter.writerow(cols)
     outlines = []
     counter = 0
-    sorted_keys = scalar_label_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(scalar_label_map.keys())
     for key in sorted_keys:
         outlines.append([key, scalar_label_map[key]])
         counter += 1

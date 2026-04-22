@@ -191,7 +191,7 @@ if __name__ == "__main__":
     ext_drive = '/opt/vs/'
     sample_set_id = 'vs254'
 
-    pecallgraphs = re.compile('\d{3,5}-pe-call-graphs-' + sample_set_id +'.gv') # This is the PID prefix for each file.
+    pecallgraphs = re.compile(r'\d{3,5}-pe-call-graphs-' + sample_set_id +'.gv') # This is the PID prefix for each file.
 
     file_list = os.listdir(ext_drive)
     call_graph_files = []

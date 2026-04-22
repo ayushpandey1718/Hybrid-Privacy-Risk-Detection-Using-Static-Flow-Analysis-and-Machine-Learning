@@ -85,7 +85,7 @@ def generate_trid_id_labels(input_file):
     fop = open('data/av-trid-id-labels.csv','w')
     fop.write('file_type,id\n')
     fop.write('unknown,0\n')
-    p1 = re.compile('.*(\d+\.\d+)\% (.+) \(\d+\/\d+\/\d+\)') # Extract the items of interest.
+    p1 = re.compile(r'.*(\d+\.\d+)\% (.+) \(\d+\/\d+\/\d+\)') # Extract the items of interest.
     out_lines = []
     row = ' '
     counter = 0

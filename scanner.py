@@ -136,7 +136,7 @@ def main():
     parser = argparse.ArgumentParser(description="Scan a file for potential malware using static analysis.")
     parser.add_argument("file", help="Path to the file to scan")
     parser.add_argument("--model", help="Path to a pickled model file", 
-                        default="vs/models/classifier-model-vs264-extratrees-100-entropy.pkl.gz")
+                        default="vs/models/classifier-model-new.pkl.gz")
     
     args = parser.parse_args()
     

@@ -38,8 +38,7 @@ def save_token_counts(token_counter_map, out_file_name):
     csv_wouter = writer(fop)
 
     outlines = []
-    sorted_keys = token_counter_map.keys()
-    sorted_keys.sort()
+    sorted_keys = sorted(token_counter_map.keys())
     counter = 0
     
     for key in sorted_keys:
@@ -79,8 +78,8 @@ def generate_elf_tokens(mp_params):
     file_list = mp_params.file_list
     out_count_file = mp_params.count_file
     
-    psections = re.compile('\s+\[\d{1,2}\]\s+(\.\w+|\w+)\s+')  # Pattern for section names.
-    pfunctions = re.compile('\s+\w+\s+\d{1,4}\s+(.+)\s*')      # Pattern for import function names.
+    psections = re.compile(r'\s+\[\d{1,2}\]\s+(\.\w+|\w+)\s+')  # Pattern for section names.
+    pfunctions = re.compile(r'\s+\w+\s+\d{1,4}\s+(.+)\s*')      # Pattern for import function names.
 
     
     token_counter_map = {}
@@ -144,31 +143,37 @@ class Multi_Params(object):
         
 
 # Start of script.
+if __name__ == "__main__":
 
-#TODO: parse command line options for input/output file names.
+    #TODO: parse command line options for input/output file names.
 
-#token_file = 'elf-header-tokens-vs263.csv'
-#count_file = 'elf-header-token-counts-vs263.csv'
-#ext_drive = '/opt/vs/train3hdr/'
+    #token_file = 'elf-header-tokens-vs263.csv'
+    #count_file = 'elf-header-token-counts-vs263.csv'
+    #ext_drive = '/opt/vs/train3hdr/'
 
-token_file = 'elf-header-tokens-vs264.txt'
-count_file = 'elf-header-token-counts-vs264.csv'
-#ext_drive = '/opt/vs/train4hdr/'
-ext_drive = '/home/derek/project/temp/'
+    token_file = 'elf-header-tokens-vs264.txt'
+    count_file = 'elf-header-token-counts-vs264.csv'
+    #ext_drive = '/opt/vs/train4hdr/'
+    ext_drive = '/home/derek/project/temp/'
 
-file_list = os.listdir(ext_drive)
-tfiles = []
+    if not os.path.isdir(ext_drive):
+        print("Warning: ext_drive '{}' not found. Exiting.".format(ext_drive))
+        import sys
+        sys.exit(1)
 
-for fname in file_list:
-    fname = fname.rstrip()
-    if fname.endswith('.elf.txt'):
-        tfiles.append(ext_drive + fname)
+    file_list = os.listdir(ext_drive)
+    tfiles = []
+
+    for fname in file_list:
+        fname = fname.rstrip()
+        if fname.endswith('.elf.txt'):
+            tfiles.append(ext_drive + fname)
 
 
-print("Files: {:d}".format(len(tfiles)))
+    print("Files: {:d}".format(len(tfiles)))
 
-mp1 = Multi_Params(token_file, count_file, tfiles)
+    mp1 = Multi_Params(token_file, count_file, tfiles)
 
-generate_elf_tokens(mp1)
+    generate_elf_tokens(mp1)
 
-# End of Script.
+    # End of Script.

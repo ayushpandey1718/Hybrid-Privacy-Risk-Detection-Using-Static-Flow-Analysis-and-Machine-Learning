@@ -21,7 +21,7 @@ from csv import writer
 import numpy as np
 import pandas as pd
 import math
-import scipy.misc
+# import scipy.misc  # Removed: deprecated in modern scipy
 import array
 import time as tm
 import re
@@ -513,7 +513,7 @@ def extract_asm_features(asm_files, feature_file, api_file):
     
     feats = pd.read_csv(feature_file)
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    sorted_feats = feats.sort('file_name')
+    sorted_feats = feats.sort_values('file_name')
     sorted_feats.to_csv('data/sorted-' + feature_file, index=False)
     
     return

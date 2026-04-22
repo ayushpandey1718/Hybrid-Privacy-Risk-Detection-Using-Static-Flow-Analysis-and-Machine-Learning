@@ -129,7 +129,7 @@ def sort_and_save_file_id_feature_file():
     
     fid = pd.read_csv('data/file-id-features.csv')
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    sorted_ids = fid.sort('file_name')
+    sorted_ids = fid.sort_values('file_name')
     sorted_ids.to_csv('data/sorted-file-id-features.csv', index=False)
     sorted_ids.head(20)
     
@@ -148,7 +148,7 @@ def combine_file_id_files():
     
     fop = open('data/file-id-features.csv','w')
     fop.write('file_name,file_type,file_id\n')
-    p1 = re.compile('\d{3,5}-sorted-file-id-features.csv') # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-sorted-file-id-features.csv') # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     
@@ -172,7 +172,7 @@ def combine_file_id_files():
 def sort_and_save_trid_id_feature_file():
     fid = pd.read_csv('data/trid-id-features.csv')
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    sorted_ids = fid.sort('file_name')
+    sorted_ids = fid.sort_values('file_name')
     sorted_ids.to_csv('data/sorted-trid-id-features.csv', index=False)
     sorted_ids.head(20)
     
@@ -182,7 +182,7 @@ def sort_and_save_trid_id_feature_file():
 def combine_trid_id_files():
     fop = open('data/trid-id-features.csv','w')
     fop.write('file_name,file_type,percentage,trid_id\n')
-    p1 = re.compile('\d{3,5}-sorted-trid-id-features.csv') # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-sorted-trid-id-features.csv') # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     
@@ -274,7 +274,7 @@ def generate_sample_trid_id(file_list):
     trid_id_map_changed = False
     high_score_line = "unknown"
     
-    p1 = re.compile('.*(\d+\.\d+)\% (.+) \(\d+\/\d+\/\d+\)') # Extract the items of interest.
+    p1 = re.compile(r'.*(\d+\.\d+)\% (.+) \(\d+\/\d+\/\d+\)') # Extract the items of interest.
     
     for idx, file_name in enumerate(file_list):
         tokens = file_name.split('_')
@@ -284,7 +284,7 @@ def generate_sample_trid_id(file_list):
         high_score_line = "unknown"
         
         signat = sub.check_output(["/opt/vs/trid", file_path])
-        components = signat.split('\n')
+        components = signat.decode('utf-8', errors='replace').split('\n')
         for idx2, line in enumerate(components):
             if line.startswith("Collect"):
                 high_score_line = components[idx2 + 1] # If we find a TrID signature the next line
@@ -335,55 +335,60 @@ def generate_sample_trid_id(file_list):
 
     
 # Start of script.
+if __name__ == "__main__":
 
-# TODO: add command line arguments to specify input/output files.
+    # TODO: add command line arguments to specify input/output files.
 
-#ext_drive = '/opt/vs/train1/'
-#ext_drive = '/opt/vs/train2/'
-#ext_drive = '/opt/vs/train3/'
-#ext_drive = '/opt/vs/train4/'
-ext_drive = '/opt/vs/apt/'
-#ext_drive = '/opt/vs/train/'
+    #ext_drive = '/opt/vs/train1/'
+    #ext_drive = '/opt/vs/train2/'
+    #ext_drive = '/opt/vs/train3/'
+    #ext_drive = '/opt/vs/train4/'
+    ext_drive = '/opt/vs/apt/'
+    #ext_drive = '/opt/vs/train/'
 
-tfiles = os.listdir(ext_drive)
+    if not os.path.isdir(ext_drive):
+        print("Warning: ext_drive '{}' not found. Exiting.".format(ext_drive))
+        sys.exit(1)
 
-# TEST
+    tfiles = os.listdir(ext_drive)
 
-#generate_sample_file_id(tfiles)
-#combine_file_id_files()
-#print('Completed processing {:d} files.'.format(len(tfiles)))
+    # TEST
 
-#generate_sample_trid_id(tfiles)
-#print('Completed processing {:d} files.'.format(len(tfiles)))
-#combine_trid_id_files()
+    #generate_sample_file_id(tfiles)
+    #combine_file_id_files()
+    #print('Completed processing {:d} files.'.format(len(tfiles)))
 
-# END TEST
+    #generate_sample_trid_id(tfiles)
+    #print('Completed processing {:d} files.'.format(len(tfiles)))
+    #combine_trid_id_files()
+
+    # END TEST
 
 
-quart = len(tfiles)/4
-train1 = tfiles[:quart]
-train2 = tfiles[quart:(2*quart)]
-train3 = tfiles[(2*quart):(3*quart)]
-train4 = tfiles[(3*quart):]
+    quart = len(tfiles)//4
+    train1 = tfiles[:quart]
+    train2 = tfiles[quart:(2*quart)]
+    train3 = tfiles[(2*quart):(3*quart)]
+    train4 = tfiles[(3*quart):]
 
-print("Files: {:d} - {:d} - {:d}".format(len(tfiles), quart, (len(train1)+len(train2)+len(train3)+len(train4))))
+    print("Files: {:d} - {:d} - {:d}".format(len(tfiles), quart, (len(train1)+len(train2)+len(train3)+len(train4))))
 
-# First generate file id magic signature feature set.
+    # First generate file id magic signature feature set.
 
-trains = [train1, train2, train3, train4]
-p = Pool(4)
-p.map(generate_sample_file_id, trains)
+    trains = [train1, train2, train3, train4]
+    p = Pool(4)
+    p.map(generate_sample_file_id, trains)
 
-print('Completed processing {:d} files.'.format(len(tfiles)))
+    print('Completed processing {:d} files.'.format(len(tfiles)))
 
-combine_file_id_files()
+    combine_file_id_files()
 
-# Now generate the TrID signatrue features.
+    # Now generate the TrID signatrue features.
 
-p.map(generate_sample_trid_id, trains)
+    p.map(generate_sample_trid_id, trains)
 
-print('Completed processing {:d} files.'.format(len(tfiles)))
+    print('Completed processing {:d} files.'.format(len(tfiles)))
 
-combine_trid_id_files()
+    combine_trid_id_files()
 
-# End of Script.
+    # End of Script.

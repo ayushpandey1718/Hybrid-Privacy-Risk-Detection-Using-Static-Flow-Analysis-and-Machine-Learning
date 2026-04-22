@@ -24,7 +24,7 @@ from csv import writer
 import numpy as np
 import pandas as pd
 import math
-import scipy.misc
+# import scipy.misc  # Removed: deprecated in modern scipy
 import array
 import time as tm
 import re
@@ -205,7 +205,7 @@ def combine_feature_files(out_file):
     
     print("Column names: {:s}".format(colnames))
     
-    p1 = re.compile('\d{3,5}-' + out_file) # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-' + out_file) # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     
@@ -223,7 +223,7 @@ def combine_feature_files(out_file):
     
     cgs = pd.read_csv('data/' + out_file)
     # DataFrame.sort() is deprecated, but this is an old version of pandas, does not have sort_values().
-    sorted_cgs = cgs.sort('file_name')
+    sorted_cgs = cgs.sort_values('file_name')
     sorted_cgs.to_csv('data/sorted-' + out_file, index=False)
     sorted_cgs.head(20)
     
@@ -241,7 +241,7 @@ def combine_graph_files(out_file):
     
     fop = open('data/' + out_file, 'w')
     
-    p1 = re.compile('\d{3,5}-' + out_file) # This is the PID prefix for each file.
+    p1 = re.compile(r'\d{3,5}-' + out_file) # This is the PID prefix for each file.
     file_list = os.listdir('data/')
     counter = 0
     
@@ -292,7 +292,7 @@ if __name__ == "__main__":
     file_list = os.listdir(ext_drive)
     tfiles = [i for i in file_list if '.pe.asm' in i]
 
-    quart = len(tfiles)/4
+    quart = len(tfiles)//4
     train1 = tfiles[:quart]
     train2 = tfiles[quart:(2*quart)]
     train3 = tfiles[(2*quart):(3*quart)]
